@@ -9,8 +9,6 @@ dotenv.config();
 
 const app = express();
 
-const tiny = app.get("env") === "development" ? "dev" : "short";
-
 app.use(morgan(tiny));
 app.use(cors());
 app.use(express.json());
