@@ -5,7 +5,7 @@ import {
   deleteContact,
   createContact,
   updateContact,
-  patchdateContact,
+  patchUpdateContact,
 } from "../controllers/contactsControllers.js";
 
 import validateBody from "../helpers/validateBody.js";
@@ -28,10 +28,6 @@ contactsRouter.post("/", validateBody(createContactSchema), createContact);
 
 contactsRouter.put("/:id", validateBody(updateContactSchema), updateContact);
 
-contactsRouter.patch(
-  "/:id/favorite",
-  validateBody(patchSchema),
-  patchdateContact
-);
+contactsRouter.patch("/:id", validateBody(patchSchema), patchUpdateContact);
 
 export default contactsRouter;

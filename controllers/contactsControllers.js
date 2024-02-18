@@ -77,7 +77,7 @@ export const updateContact = async (req, res) => {
   }
 };
 
-export const patchdateContact = async (req, res) => {
+export const patchUpdateContact = async (req, res) => {
   try {
     const { id } = req.params;
     const { favorite } = req.body;
