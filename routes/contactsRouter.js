@@ -28,6 +28,10 @@ contactsRouter.post("/", validateBody(createContactSchema), createContact);
 
 contactsRouter.put("/:id", validateBody(updateContactSchema), updateContact);
 
-contactsRouter.patch("/:id", validateBody(patchSchema), patchUpdateContact);
+contactsRouter.patch(
+  "/:id/favorite",
+  validateBody(patchSchema),
+  patchUpdateContact
+);
 
 export default contactsRouter;
