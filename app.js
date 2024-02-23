@@ -1,20 +1,17 @@
+import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import dotenv from "dotenv";
-
-import contactsRouter from "./routes/contactsRouter.js";
-
-dotenv.config();
+import contactsRouter from "./routes/contacts.js";
+import authRouter from "./routes/auth.js";
 
 const app = express();
 
-const tiny = app.get("env") === "development" ? "dev" : "short";
-
-app.use(morgan(tiny));
+app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
+app.use("/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
