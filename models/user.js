@@ -3,15 +3,15 @@ import { HandleMongooseError } from "../helpers/index.js";
 
 const userSchema = new Schema(
   {
+    password: {
+      type: String,
+      minlength: 6,
+      required: [true, "Password is required"],
+    },
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
-    },
-    password: {
-      type: String,
-      minlength: 6,
-      required: [true, "Set password for user"],
     },
     subscription: {
       type: String,
@@ -20,7 +20,7 @@ const userSchema = new Schema(
     },
     token: {
       type: String,
-      default: "",
+      default: null,
     },
   },
   { versionKey: false }
