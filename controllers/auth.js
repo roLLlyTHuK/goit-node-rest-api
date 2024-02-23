@@ -60,9 +60,27 @@ const logout = async (req, res) => {
   });
 };
 
+const patchSubscription = async (req, res) => {
+  const { _id } = req.user;
+  const { subscription } = req.body;
+  const result = await User.findByIdAndUpdate(
+    _id,
+    { subscription },
+    { new: true }
+  );
+  if (!result) {
+    throw HttpError(404, "Not Found");
+  }
+  res.status(200).json({
+    email: result.email,
+    subscription: result.subscription,
+  });
+};
+
 export const userControllers = {
   register,
   login,
   getCurrent,
   logout,
+  patchSubscription,
 };

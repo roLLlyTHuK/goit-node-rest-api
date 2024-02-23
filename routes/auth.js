@@ -20,4 +20,11 @@ authRouter.post(
 authRouter.get("/current", validateJWT, userControllers.getCurrent);
 authRouter.post("/logout", validateJWT, userControllers.logout);
 
+authRouter.patch(
+  "/users",
+  validateJWT,
+  validateBody(schemas.subscriptionSchema),
+  userControllers.patchSubscription
+);
+
 export default authRouter;

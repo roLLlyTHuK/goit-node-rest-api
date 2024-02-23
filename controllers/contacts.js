@@ -57,7 +57,12 @@ const updateContact = async (req, res) => {
 const updateFavorite = async (req, res) => {
   const { id } = req.params;
   const { _id: owner } = req.user;
-  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true })
+  const { favorite } = req.body;
+  const result = await Contact.findByIdAndUpdate(
+    id,
+    { favorite },
+    { new: true }
+  )
     .where("owner")
     .equals(owner);
   if (!result) {
