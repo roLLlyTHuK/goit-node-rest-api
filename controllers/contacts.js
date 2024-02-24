@@ -1,5 +1,5 @@
 import { Contact } from "../models/contact.js";
-import { HttpError } from "../helpers/index.js";
+
 
 const getAllContacts = async (req, res) => {
   const { _id: owner } = req.user;
@@ -19,7 +19,7 @@ const getOneContact = async (req, res) => {
     .where("owner")
     .equals(owner);
   if (!result) {
-    throw HttpError(404, "Not Found");
+    return res.status(404).json({ message: "Not found" });
   }
   res.status(200).json(result);
 };
@@ -37,7 +37,7 @@ const deleteContact = async (req, res) => {
     .where("owner")
     .equals(owner);
   if (!result) {
-    throw HttpError(404, "Not Found");
+    return res.status(404).json({ message: "Not found" });
   }
   res.json({ message: "Delete success" });
 };
@@ -49,7 +49,7 @@ const updateContact = async (req, res) => {
     .where("owner")
     .equals(owner);
   if (!result) {
-    throw HttpError(404, "Not Found");
+    return res.status(404).json({ message: "Not found" });
   }
   res.json(result);
 };
@@ -66,7 +66,7 @@ const updateFavorite = async (req, res) => {
     .where("owner")
     .equals(owner);
   if (!result) {
-    throw HttpError(404, "Not Found");
+    return res.status(404).json({ message: "Not found" });
   }
   res.json(result);
 };

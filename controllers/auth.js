@@ -2,7 +2,6 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
-import { HttpError } from "../helpers/index.js";
 
 const { SECRET_KEY } = process.env;
 
@@ -10,14 +9,14 @@ const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
-    throw HttpError(409, "Email in use");
+    return res.status(409).json({ message: "Email in use" });
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
 
   const newUser = await User.create({ ...req.body, password: hashPassword });
   res.status(201).json({
-    users: { email: newUser.email, name: newUser.subscription },
+    users: { email: newUser.email, subscription: newUser.subscription },
   });
 };
 
@@ -25,11 +24,11 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    throw HttpError(401, "Email or password is invalid");
+    return res.status(401).json({ message: "Email or password is wrong" });
   }
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
-    throw HttpError(401, "Email or password is invalid");
+    return res.status(401).json({ message: "Email or password is wrong" });
   }
 
   const payload = {
@@ -45,7 +44,11 @@ const login = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-  const { email, subscription } = req.user;
+  const { token, email, subscription } = req.user;
+
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized" });
+  }
   res.json({
     email,
     subscription,
@@ -56,7 +59,7 @@ const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
   res.status(204).json({
-    message: "Logout success. No content",
+    message: "Logout success. Content not found",
   });
 };
 
@@ -69,7 +72,10 @@ const patchSubscription = async (req, res) => {
     { new: true }
   );
   if (!result) {
-    throw HttpError(404, "Not Found");
+    return res.status(404).json({ message: "Not found" });
+  }
+  if (result.token === null) {
+    return res.status(401).json({ message: "Not authorized" });
   }
   res.status(200).json({
     email: result.email,
