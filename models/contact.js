@@ -29,6 +29,4 @@ const contactSchema = new Schema(
 );
 contactSchema.post("save", HandleMongooseError);
 
-const Contact = model("contact", contactSchema);
-
-export { Contact };
+export const Contact = model("contact", contactSchema);
