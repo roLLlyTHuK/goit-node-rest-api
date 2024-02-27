@@ -3,7 +3,7 @@ import request from "supertest";
 import dotenv from "dotenv";
 dotenv.config();
 import app from "../app.js";
-import { userControllers } from "./auth.js";
+import { userControllers } from "../controllers/auth.js";
 
 const { DB_URI } = process.env;
 
