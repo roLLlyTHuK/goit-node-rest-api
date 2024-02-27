@@ -123,7 +123,7 @@ const updateAvatar = async (req, res) => {
     console.log(error);
   }
 
-  const avatarURL = path.join("avatars", filename);
+  const avatarURL = path.join("public", "avatars", filename);
   const result = await User.findByIdAndUpdate(_id, { avatarURL });
   if (!result) {
     return res.status(404).json({ message: "Not found" });
