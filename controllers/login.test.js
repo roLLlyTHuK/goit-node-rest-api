@@ -39,4 +39,28 @@ describe("test login controller", () => {
       subscription: expect.any(String),
     });
   });
+
+  test("login controller whith incorrect password returns status code 401", async () => {
+    const response = await request(app).post(ENDPOINT).send({
+      email: "test@test.ua",
+      password: "test@test.ua123",
+    });
+    expect(response.status).toBe(401);
+  });
+
+  test("login controller whith incorrect email returns status code 401", async () => {
+    const response = await request(app).post(ENDPOINT).send({
+      email: "test123@test.ua",
+      password: "test@test.ua",
+    });
+    expect(response.status).toBe(401);
+  });
+
+  test("login controller whith null email and password returns status code 400", async () => {
+    const response = await request(app).post(ENDPOINT).send({
+      email: "",
+      password: "",
+    });
+    expect(response.status).toBe(400);
+  });
 });
